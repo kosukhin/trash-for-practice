@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "serve": "vue-cli-service serve --port=8082",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --dest=../public/vue2",
     "lint": "vue-cli-service lint",
     "e2e:ci": "pnpm run build"
   },
