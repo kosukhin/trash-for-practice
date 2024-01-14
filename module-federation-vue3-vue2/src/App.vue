@@ -12,6 +12,7 @@
 import { ref } from 'vue';
 import Button from 'vue2App/HelloWorld';
 import { vue2ToVue3 } from './utils';
+import test from 'vue2App/test.css';
 
 export default {
   components: {
@@ -22,6 +23,8 @@ export default {
     const inc = () => {
       count.value += 1;
     };
+
+    console.log('test', test);
 
     return {
       count,

@@ -30,6 +30,7 @@ export function vue2ToVue3(WrapperComponent, wrapperId) {
           );
         },
       });
+      console.log(Vue2);
       vm.$mount(`#${wrapperId}`);
     },
     props: WrapperComponent.props,
