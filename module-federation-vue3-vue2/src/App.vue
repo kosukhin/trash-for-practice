@@ -1,30 +1,38 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <h3>Vue3 App</h3>
+    <div class="v2">in vue3</div>
+    <p>&nbsp;</p>
+    <div id="vue2Button"></div>
+    <vue2-button @btnClick="inc"/>
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import { ref } from 'vue';
+import Button from 'vue2App/HelloWorld';
+import { vue2ToVue3 } from './utils';
 
-nav {
-  padding: 30px;
-}
+export default {
+  components: {
+    vue2Button: vue2ToVue3(Button, 'vue2Button'),
+  },
+  setup() {
+    const count = ref(0);
+    const inc = () => {
+      count.value += 1;
+    };
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+    return {
+      count,
+      inc,
+    };
+  },
+};
+</script>
 
-nav a.router-link-exact-active {
-  color: #42b983;
+<style scoped>
+h1 {
+  font-family: Arial, Helvetica, sans-serif;
 }
 </style>

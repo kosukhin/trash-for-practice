@@ -31,11 +31,12 @@ module.exports = defineConfig({
     },
     plugins: [
       new webpack.container.ModuleFederationPlugin({
-        name: 'app_exposes',
+        name: 'vue2',
         filename: 'remoteEntry.js',
+        library: { type: 'var', name: 'vue2App' },
         exposes: {
-          './HelloWorld.vue': './src/components/HelloWorld.vue',
-          './AboutView.vue': './src/views/AboutView.vue',
+          './vue2': './node_modules/vue/dist/vue',
+          './HelloWorld': './src/components/HelloWorld.vue',
         },
       }),
     ],
