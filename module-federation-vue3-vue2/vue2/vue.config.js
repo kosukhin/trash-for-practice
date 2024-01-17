@@ -31,12 +31,14 @@ function enableShadowCss(config) {
     config.module.rule('stylus').oneOf('normal-modules').use('vue-style-loader'),
     config.module.rule('stylus').oneOf('normal').use('vue-style-loader'),
   ];
-  configs.forEach((c) => c.tap((options) => {
-    if (options) {
-      options.shadowMode = true;
-    }
-    return options;
-  }));
+  configs.forEach((c) => {
+    c
+      // .loader(require.resolve('style-loader'))
+      .options({
+        insert: require.resolve('./styleLoader.js'),
+        shadowMode: true,
+      });
+  });
 }
 
 module.exports = defineConfig({
@@ -50,6 +52,23 @@ module.exports = defineConfig({
     enableShadowCss(config);
   },
   configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.scss$/,
+          use: [
+            {
+              loader: 'style-loader',
+              options: {
+                insert: require.resolve('./styleLoader.js'),
+              },
+            },
+            'css-loader',
+            'sass-loader',
+          ],
+        },
+      ],
+    },
     plugins: [
       new webpack.container.ModuleFederationPlugin({
         name: 'vue2',
@@ -57,7 +76,7 @@ module.exports = defineConfig({
         library: { type: 'var', name: 'vue2App' },
         exposes: {
           './vue2': './node_modules/vue/dist/vue',
-          './HelloWorld': './src/components/HelloWorld.vue',
+          './HelloWorld?shadow': './src/components/HelloWorld.vue?shadow',
           './test.css': './src/components/test.css',
         },
       }),

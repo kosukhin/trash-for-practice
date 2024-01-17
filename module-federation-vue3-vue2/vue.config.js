@@ -7,6 +7,17 @@ module.exports = defineConfig({
       entry: './src/index.ts',
     },
   },
+  chainWebpack: config => {
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap(options => ({
+        ...options,
+        compilerOptions: {
+          isCustomElement: tag => tag.startsWith('legacy-'),
+        },
+      }));
+  },
   configureWebpack: {
     plugins: [
       new webpack.container.ModuleFederationPlugin({

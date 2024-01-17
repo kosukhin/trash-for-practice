@@ -1,4 +1,5 @@
 import Vue2 from 'vue2App/vue2';
+import {defineCustomElement,h} from 'vue'
 
 function bindSlotContext(target = {}, context) {
   return Object.keys(target).map(key => {
@@ -12,30 +13,46 @@ function bindSlotContext(target = {}, context) {
  * Transform vue2 components to DOM.
  */
 export function vue2ToVue3(WrapperComponent, wrapperId) {
+
+  if (customElements.get(wrapperId)) {
+    return;
+  }
+
   let vm;
-  return {
-    mounted() {
-      const slots = bindSlotContext(this.$slots, this.__self);
-      vm = new Vue2({
-        render: createElement => {
-          return createElement(
-            WrapperComponent,
-            {
-              on: this.$attrs,
-              attrs: this.$attrs,
-              props: this.$props,
-              scopedSlots: this.$scopedSlots,
-            },
-            slots,
-          );
-        },
-      });
-      console.log(Vue2);
-      vm.$mount(`#${wrapperId}`);
-    },
+  const customElement = defineCustomElement({
     props: WrapperComponent.props,
-    render() {
+    mounted() {
+      console.log(this.$el)
+      const slots = bindSlotContext(this.$slots, this.__self);
+      vm = new Vue2({ render: createElement => {
+        const element = createElement(
+          WrapperComponent,
+          {
+            on: this.$attrs,
+            attrs: this.$attrs,
+            props: this.$props,
+            scopedSlots: this.$scopedSlots,
+          },
+          slots,
+        );
+        return element;
+      }});
+      vm.$mount(this.$refs[wrapperId]);
       vm && vm.$forceUpdate();
+      setTimeout(() => {
+        console.log('vm', vm)
+      }, 3000)
     },
-  };
+    beforeDestroy() {
+      vm && (vm = undefined);
+    },
+    render() {
+      return h('div', {}, [
+        h('div', { ref: wrapperId }),
+      ]);
+    },
+  });
+
+  console.log(customElement);
+  customElements.define(wrapperId, customElement);
 }
