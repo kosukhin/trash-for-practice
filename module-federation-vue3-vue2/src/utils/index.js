@@ -12,7 +12,7 @@ function bindSlotContext(target = {}, context) {
 /*
  * Transform vue2 components to DOM.
  */
-export function vue2ToVue3(WrapperComponent, wrapperId) {
+export function vue2ToVue3(WrapperComponent, wrapperId, stylesModule) {
 
   if (customElements.get(wrapperId)) {
     return;
@@ -22,7 +22,9 @@ export function vue2ToVue3(WrapperComponent, wrapperId) {
   const customElement = defineCustomElement({
     props: WrapperComponent.props,
     mounted() {
-      console.log(this.$el)
+      console.log('styles module', stylesModule)
+      console.log('nw root', this.$el.parentNode)
+      // stylesModule.__inject__(this.$el.parentNode)
       const slots = bindSlotContext(this.$slots, this.__self);
       vm = new Vue2({ render: createElement => {
         const element = createElement(

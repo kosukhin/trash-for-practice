@@ -11,5 +11,14 @@ export default defineComponent({
   props: {
     msg: String,
   },
+  mounted() {
+    console.log('root', this.$el.parentNode, this.$el.parentNode?.parentNode);
+  },
 });
 </script>
+
+<style>
+body {
+  background-color: aliceblue;
+}
+</style>
