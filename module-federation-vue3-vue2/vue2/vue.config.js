@@ -36,9 +36,7 @@ function enableShadowCss(config) {
   ];
   configs.forEach((c) => {
     c
-      // .loader(require.resolve('style-loader'))
       .options({
-        insert: require.resolve('./styleLoader.js'),
         shadowMode: true,
       });
   });
