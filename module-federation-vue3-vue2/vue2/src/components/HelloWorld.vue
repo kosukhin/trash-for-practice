@@ -4,7 +4,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import './test.css';
 
 export default defineComponent({
   name: 'HelloWorld',
@@ -18,7 +17,9 @@ export default defineComponent({
 </script>
 
 <style>
-body {
-  background-color: aliceblue;
+.v2 {
+  background-color: red;
+  font-size: 30px;
+  padding: 40px;
 }
 </style>

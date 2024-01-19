@@ -24,7 +24,7 @@ export function vue2ToVue3(WrapperComponent, wrapperId, stylesModule) {
     mounted() {
       console.log('styles module', stylesModule)
       console.log('nw root', this.$el.parentNode)
-      // stylesModule.__inject__(this.$el.parentNode)
+      //stylesModule.__inject__(this.$el.parentNode)
       const slots = bindSlotContext(this.$slots, this.__self);
       vm = new Vue2({ render: createElement => {
         const element = createElement(
@@ -39,6 +39,7 @@ export function vue2ToVue3(WrapperComponent, wrapperId, stylesModule) {
         );
         return element;
       }});
+      vm.$options.shadowRoot = this.$el.parentNode
       vm.$mount(this.$refs[wrapperId]);
       vm && vm.$forceUpdate();
       setTimeout(() => {

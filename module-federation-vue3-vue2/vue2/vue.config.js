@@ -3,6 +3,9 @@ const webpack = require('webpack');
 
 process.env.VUE_CLI_CSS_SHADOW_MODE = true;
 
+// eslint-disable-next-line no-undef
+globalThis.mlg = console.log.bind(null, '\n', 'MY', 'style loader');
+
 function enableShadowCss(config) {
   const configs = [
     config.module.rule('vue').use('vue-loader'),
