@@ -1,10 +1,9 @@
 const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
 
-process.env.VUE_CLI_CSS_SHADOW_MODE = true;
+require('../public/debugger');
 
-// eslint-disable-next-line no-undef
-globalThis.mlg = console.log.bind(null, '\n', 'MY', 'style loader');
+process.env.VUE_CLI_CSS_SHADOW_MODE = true;
 
 function enableShadowCss(config) {
   const configs = [

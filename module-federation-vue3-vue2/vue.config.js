@@ -1,6 +1,8 @@
 const { defineConfig } = require('@vue/cli-service');
 const webpack = require('webpack');
 
+require('./public/debugger');
+
 module.exports = defineConfig({
   pages: {
     index: {
