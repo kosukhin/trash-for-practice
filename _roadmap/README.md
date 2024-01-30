@@ -3,6 +3,10 @@
   - [Errors](../exploration/js-basics/errors.js)
 - SEO basics
 - Web API
+  - Notification API 
+  - WebStorages
+  - Workers API
+  - Atomics API
 - Node API
 - Functional basics
 - OOP basics
@@ -18,6 +22,10 @@
 - Databases
 - Vue
 - Vue SSR
+- Vue cli
 - Nuxt
+  - [sharing asyncData](../exploration/nuxt/v3_10_0/pages/test) 
 - rxjs
 - effector
+- Webpack
+- esbuild
