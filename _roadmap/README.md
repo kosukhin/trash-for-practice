@@ -1,14 +1,22 @@
 - JS basics
   - [Types](../exploration/js-basics/types.js)
   - [Errors](../exploration/js-basics/errors.js)
+  - Falsy
+  - Memory
 - SEO basics
 - Web API
+  - Canvas [canvas](../exploration/canvas)
   - Notification API 
   - WebStorages
   - Workers API
   - Atomics API
+  - [CookieStore](https://developer.mozilla.org/en-US/docs/Web/API/CookieStore)
+- Accessability
+  - Alt Lang DecorateText
 - Node API
-- Functional basics
+- Functional programming
+  - Ramda
+  - Functional Light
 - OOP basics
 - Algorithms basics
 - Data Structures
@@ -23,8 +31,13 @@
 - Vue
 - Vue SSR
 - Vue cli
+- Vuetify
 - Nuxt
   - [sharing asyncData](../exploration/nuxt/v3_10_0/pages/test) 
+  - [useId composable](../exploration/nuxt/v3_10_0/pages/use-id.vue)
+  - [pages:routerOptions](../exploration/nuxt/v3_10_0/nuxt.config.ts)
+  - [node: зависимости]([process.vue](../exploration/nuxt/v3_10_0/pages/process.vue))
+  - cookieStore [cookie.vue](../exploration/nuxt/v3_10_0/pages/cookie.vue)
 - rxjs
 - effector
 - Webpack
