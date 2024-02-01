@@ -1,8 +1,10 @@
 - JS basics
   - [Types](../exploration/js-basics/types.js)
   - [Errors](../exploration/js-basics/errors.js)
-  - Falsy
-  - Memory
+  - Falsy [falsy.js](..%2Fexploration%2Fjs-basics%2Ffalsy.js)
+  - Memory[memory.js](..%2Fexploration%2Fjs-basics%2Fmemory.js)
+  - localCompare sorting[sorting.js](..%2Fexploration%2Fjs-basics%2Fsorting.js)
+  - Unicode[unicode.js](..%2Fexploration%2Fjs-basics%2Funicode.js)
 - SEO basics
 - Web API
   - Canvas [canvas](../exploration/canvas)
