@@ -1,10 +1,10 @@
 - JS basics
   - [Types](../exploration/js-basics/types.js)
   - [Errors](../exploration/js-basics/errors.js)
-  - Falsy [falsy.js](..%2Fexploration%2Fjs-basics%2Ffalsy.js)
-  - Memory[memory.js](..%2Fexploration%2Fjs-basics%2Fmemory.js)
-  - localCompare sorting[sorting.js](..%2Fexploration%2Fjs-basics%2Fsorting.js)
-  - Unicode[unicode.js](..%2Fexploration%2Fjs-basics%2Funicode.js)
+  - Falsy [falsy.js](../exploration/js-basics/falsy.js)
+  - Memory[memory.js](../exploration/js-basics/memory.js)
+  - localCompare sorting[sorting.js](../exploration/js-basics/sorting.js)
+  - Unicode[unicode.js](../exploration/js-basics/unicode.js)
 - SEO basics
 - Web API
   - Canvas [canvas](../exploration/canvas)
@@ -17,12 +17,14 @@
   - Alt Lang DecorateText
 - Node API
 - Functional programming
-  - Ramda
+  - Ramda[_readme.md](../exploration/ramda/_readme.md)
   - Functional Light
 - OOP basics
 - Algorithms basics
 - Data Structures
 - CSS Basics
+  - CSS in JS
+  - Tailwind Atomic css
 - HTML Basics
 - Wasm
 - PWA
@@ -44,3 +46,5 @@
 - effector
 - Webpack
 - esbuild
+- Metarhia
+  - Asyncs
