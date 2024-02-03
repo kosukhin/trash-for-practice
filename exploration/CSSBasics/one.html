@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        :root {
+            counter-reset: headings;
+        }
+
+        h1 {
+            counter-increment: headings;
+        }
+
+        h1::before {
+            content: counter(headings);
+            margin-right: 5px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 500px 1fr;
+            grid-template-rows: 100px 200px;
+            place-items: center;
+            grid-gap: 8px;
+        }
+        .block {
+            background: #2c3e50;
+            width: 100px;
+            height: 200px;
+        }
+        article {
+            height: 100px;
+            background: pink;
+            width: clamp(200px, 50%, 800px);
+        }
+        nav {
+            div {
+                background: #ff0;
+                width: 200px;
+                height: 100px;
+            }
+        }
+        .ideal-paragraph {
+            width: clamp(45ch, 50%, 75ch);
+        }
+    </style>
+</head>
+<body>
+<div class="ideal-paragraph">
+    one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four one two three four
+</div>
+<div class="grid">
+    <div class="block"></div>
+    <div class="block"></div>
+    <div class="block"></div>
+    <div class="block"></div>
+    <div class="block"></div>
+</div>
+<article></article>
+<nav>
+    <div></div>
+</nav>
+<h1>One</h1>
+<h1>Two</h1>
+<h1>Three</h1>
+</body>
+</html>

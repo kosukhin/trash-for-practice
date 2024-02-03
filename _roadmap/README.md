@@ -22,7 +22,8 @@
 - OOP basics
 - Algorithms basics
 - Data Structures
-- CSS Basics
+  - js structs[readme.md](../exploration/dataStructures/js-structs/readme.md)
+- CSS Basics[one.html](../exploration/CSSBasics/one.html)
   - CSS in JS
   - Tailwind Atomic css
 - HTML Basics
@@ -45,6 +46,6 @@
 - rxjs
 - effector
 - Webpack
-- esbuild
+- esbuild[esbuild](../exploration/esbuild)
 - Metarhia
   - Asyncs
