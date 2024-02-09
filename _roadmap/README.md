@@ -12,6 +12,7 @@
   - WebStorages
   - Workers API
   - Atomics API
+  - Cache API
   - [CookieStore](https://developer.mozilla.org/en-US/docs/Web/API/CookieStore)
 - Accessability
   - Alt Lang DecorateText
@@ -19,6 +20,9 @@
 - Functional programming
   - Ramda[_readme.md](../exploration/ramda/_readme.md)
   - Functional Light
+  - Elm.js
+- Procedural programming
+  - MyView[readme.md](../exploration/procedural/readme.md)
 - OOP basics
 - Algorithms basics
 - Data Structures
@@ -33,10 +37,12 @@
 - Asyncs
 - Package managers
 - Databases
+- Lit[README.md](../exploration/lit/README.md)
 - Vue
 - Vue SSR
 - Vue cli
 - Vuetify
+- React[react](../exploration/react)
 - Nuxt
   - [sharing asyncData](../exploration/nuxt/v3_10_0/pages/test) 
   - [useId composable](../exploration/nuxt/v3_10_0/pages/use-id.vue)
@@ -45,7 +51,7 @@
   - cookieStore [cookie.vue](../exploration/nuxt/v3_10_0/pages/cookie.vue)
 - rxjs
 - effector
-- Webpack
+- Webpack[webpack](../exploration/webpack)
 - esbuild[esbuild](../exploration/esbuild)
 - Metarhia
   - Asyncs

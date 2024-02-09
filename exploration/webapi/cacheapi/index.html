@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<div>
+    CacheAPI
+</div>
+<div>
+    StorageManagerAPI
+</div>
+<script>
+  const addToFeed = (data) => {
+    console.log('added to feed', data);
+  }
+  (async () => {
+    if (true) {
+      const url = "https://jsonplaceholder.typicode.com/posts";
+      const cache = await caches.open("cache"); // Открываем кэш. Если такого не было до - создаестся новый.
+
+      const cachedResponse = await cache.match(url);
+
+      if (cachedResponse) {
+        const data = await cachedResponse.json();
+        console.log('from cache');
+        addToFeed(data);
+
+        return;
+      }
+
+      fetch(url).then(async (res) => {
+        cache.put(url, res);
+
+        const cloned = res.clone();
+        addToFeed(await cloned.json());
+      });
+    }
+  })();
+</script>
+<script>
+  (async () => {
+    // StorageManager API
+    if (navigator.storage && navigator.storage.estimate) {
+      const quota = await navigator.storage.estimate();
+      // quota.usage -> свободное пространство ( в байтах).
+      // quota.quota -> доступное пространство (в байтах).
+      const percentageUsed = (quota.usage / quota.quota) * 100;
+      console.log(`memory used ${percentageUsed}%`);
+      const remaining = quota.quota - quota.usage;
+      console.log(`available memory ${remaining} `);
+    }
+  })()
+</script>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+</html>
