@@ -68,6 +68,16 @@ export class LazyMonad {
     this.value = fn(this.value)
     return this;
   }
+
+  getError() {
+    return null
+  }
+
+  throwIfError() {
+    if (this.getError()) {
+      throw new Error(this.getError())
+    }
+  }
 }
 
 export const none = () => new None(null);
@@ -101,6 +111,10 @@ export class Some extends LazyMonad {
 export const left = (error?: string) => new Left(error);
 export class Left extends None {
   private error: string = "Unknown error";
+
+  getError() {
+    return this.error
+  }
 
   constructor(error?: string) {
     super(null);
