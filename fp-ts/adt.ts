@@ -35,11 +35,7 @@ export class LazyMonad {
     return new LazyMonad(value);
   }
 
-  /**
-   * Исполняет функцию, которая возвращает монаду
-   * результат работы возвращенной монады
-   */
-  chain(fn: (value: any) => LazyMonad) {
+  protected chain(fn: (value: any) => LazyMonad) {
     return fn(this.value);
   }
 
@@ -52,10 +48,6 @@ export class LazyMonad {
     return this;
   }
 
-  /**
-   * Принимает функцию изменяющую значение
-   * возвращает ту же монаду
-   */
   lazyMap(fn: (value: any) => any) {
     const lastExecutor = this.executor;
     this.executor = (v: any) => {
@@ -65,7 +57,7 @@ export class LazyMonad {
     return this;
   }
 
-  map(fn: (value: any) => any) {
+  protected map(fn: (value: any) => any) {
     this.value = fn(this.value);
     return this;
   }
@@ -87,14 +79,14 @@ export class None extends LazyMonad {
     return new None(value);
   }
 
-  chain(fn: (value: any) => LazyMonad) {
+  protected chain(fn: (value: any) => LazyMonad) {
     if (this.value !== null && this.value !== undefined) {
       super.chain(fn);
     }
     return this;
   }
 
-  map(fn: (value: any) => any): this {
+  protected map(fn: (value: any) => any): this {
     if (this.value !== null && this.value !== undefined) {
       super.map(fn);
     }
@@ -136,7 +128,7 @@ export class IO extends LazyMonad {
     this.io = v
   }
 
-  chain(fn: (value: any) => LazyMonad) {
+  protected chain(fn: (value: any) => LazyMonad) {
     this.io(this.value).then((value) => {
       this.value = value
       super.chain(fn)
@@ -144,7 +136,7 @@ export class IO extends LazyMonad {
     return this;
   }
 
-  map(fn: (value: any) => any) {
+  protected map(fn: (value: any) => any) {
     this.io(this.value).then((value) => {
       this.value = value
       super.map(fn)
