@@ -7,7 +7,8 @@ export const pipe = (v: any, ...fns: any[]) =>
 
 export const doMonad = (v: LazyMonad): LazyMonad => v.do();
 export const map = (fn: AnyFn) => (context: LazyMonad) => context.lazyMap(fn);
-export const chain = (fn: AnyFn) => (context: LazyMonad) => context.lazyChain(fn);
+export const chain = (fn: AnyFn) => (context: LazyMonad) =>
+  context.lazyChain(fn);
 
 export const monad = (v: any) => new LazyMonad(v);
 export class LazyMonad {
@@ -65,17 +66,17 @@ export class LazyMonad {
   }
 
   map(fn: (value: any) => any) {
-    this.value = fn(this.value)
+    this.value = fn(this.value);
     return this;
   }
 
   getError() {
-    return null
+    return null;
   }
 
   throwIfError() {
     if (this.getError()) {
-      throw new Error(this.getError())
+      throw new Error(this.getError());
     }
   }
 }
@@ -113,7 +114,7 @@ export class Left extends None {
   private error: string = "Unknown error";
 
   getError() {
-    return this.error
+    return this.error;
   }
 
   constructor(error?: string) {
@@ -126,10 +127,29 @@ export class Left extends None {
   }
 }
 
-export const io = (v: AnyFn) => new IO(v);
+export const io = (v: (value: any) => Promise<any>) => new IO(v);
 export class IO extends LazyMonad {
-  constructor(v: AnyFn) {
+  private io: (value: any) => Promise<any>
+
+  constructor(v: (value: any) => Promise<any>) {
     super(null);
+    this.io = v
+  }
+
+  chain(fn: (value: any) => LazyMonad) {
+    this.io(this.value).then((value) => {
+      this.value = value
+      super.chain(fn)
+    })
+    return this;
+  }
+
+  map(fn: (value: any) => any) {
+    this.io(this.value).then((value) => {
+      this.value = value
+      super.map(fn)
+    })
+    return this;
   }
 
   of(value: any) {
