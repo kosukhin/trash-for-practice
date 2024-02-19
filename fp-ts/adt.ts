@@ -9,10 +9,13 @@ export const doMonad = (v: LazyMonad): LazyMonad => v.do();
 export const map = (fn: AnyFn) => (context: LazyMonad) => context.lazyMap(fn);
 export const chain = (fn: AnyFn) => (context: LazyMonad) =>
   context.lazyChain(fn);
+export const tap = (fn: AnyFn) => (context: LazyMonad) => context.lazyTap(fn);
 
 export const monad = (v: any) => new LazyMonad(v);
 export class LazyMonad {
-  protected executor: any = (v: any) => this.of(v);
+  protected executor: any = (v: any, result: AnyFn) => {
+    result(this.of(v));
+  }
   protected value: any;
 
   get unSafeValue() {
@@ -32,8 +35,8 @@ export class LazyMonad {
   }
 
   do() {
-    this.executor(this.value, (res) => {
-      console.log('do result', res);
+    this.executor(this.value, (res: LazyMonad) => {
+      this.value = res.unSafeValue
     });
     return this;
   }
@@ -50,14 +53,18 @@ export class LazyMonad {
     return this.modifyExecutor("map", fn);
   }
 
+  lazyTap(fn: (value: any) => void) {
+    return this.modifyExecutor("tap", fn);
+  }
+
   modifyExecutor(method: string, fn: AnyFn) {
     const lastExecutor = this.executor;
+    let counter = 0
     this.executor = (v: any, result: (v: any) => void) => {
+      counter += 1
       lastExecutor(v, (monad: LazyMonad) => {
-        console.log('last exec');
-
         monad.executorNextStep((replaceMonad?: LazyMonad) => {
-          result(replaceMonad ? replaceMonad[method](fn) : monad[method](fn))
+          result(replaceMonad ? replaceMonad[method](fn) : monad[method](fn));
         });
       });
     };
@@ -70,6 +77,11 @@ export class LazyMonad {
 
   protected map(fn: (value: any) => any) {
     this.value = fn(this.value);
+    return this;
+  }
+
+  protected tap(fn: (value: any, error?: any) => any) {
+    fn(this.value, this.getError());
     return this;
   }
 
@@ -136,6 +148,8 @@ export class IO extends LazyMonad {
   executorNextStep(fn: AnyFn) {
     this.io(this.value).then((value) => {
       fn(value);
+    }).catch(e => {
+      fn(left(e.message))
     });
   }
 
