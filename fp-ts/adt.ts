@@ -27,34 +27,45 @@ export class LazyMonad {
     this.value = value;
   }
 
+  executorNextStep(fn: AnyFn) {
+    return fn();
+  }
+
   do() {
-    return this.executor(this.value);
+    this.executor(this.value, (res) => {
+      console.log('do result', res);
+    });
+    return this;
   }
 
   of(value: any) {
     return new LazyMonad(value);
   }
 
-  protected chain(fn: (value: any) => LazyMonad) {
-    return fn(this.value);
-  }
-
   lazyChain(fn: (value: any) => LazyMonad) {
-    const lastExecutor = this.executor;
-    this.executor = (v: any) => {
-      const monad = lastExecutor(v) as LazyMonad;
-      return monad.chain(fn);
-    };
-    return this;
+    return this.modifyExecutor("chain", fn);
   }
 
   lazyMap(fn: (value: any) => any) {
+    return this.modifyExecutor("map", fn);
+  }
+
+  modifyExecutor(method: string, fn: AnyFn) {
     const lastExecutor = this.executor;
-    this.executor = (v: any) => {
-      const monad = lastExecutor(v) as LazyMonad;
-      return monad.map(fn);
+    this.executor = (v: any, result: (v: any) => void) => {
+      lastExecutor(v, (monad: LazyMonad) => {
+        console.log('last exec');
+
+        monad.executorNextStep((replaceMonad?: LazyMonad) => {
+          result(replaceMonad ? replaceMonad[method](fn) : monad[method](fn))
+        });
+      });
     };
     return this;
+  }
+
+  protected chain(fn: (value: any) => LazyMonad) {
+    return fn(this.value);
   }
 
   protected map(fn: (value: any) => any) {
@@ -121,27 +132,16 @@ export class Left extends None {
 
 export const io = (v: (value: any) => Promise<any>) => new IO(v);
 export class IO extends LazyMonad {
-  private io: (value: any) => Promise<any>
+  private io: (value: any) => Promise<any>;
+  executorNextStep(fn: AnyFn) {
+    this.io(this.value).then((value) => {
+      fn(value);
+    });
+  }
 
   constructor(v: (value: any) => Promise<any>) {
     super(null);
-    this.io = v
-  }
-
-  protected chain(fn: (value: any) => LazyMonad) {
-    this.io(this.value).then((value) => {
-      this.value = value
-      super.chain(fn)
-    })
-    return this;
-  }
-
-  protected map(fn: (value: any) => any) {
-    this.io(this.value).then((value) => {
-      this.value = value
-      super.map(fn)
-    })
-    return this;
+    this.io = v;
   }
 
   of(value: any) {
