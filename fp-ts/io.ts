@@ -24,4 +24,4 @@ const show = (v: typeof state) => {
 };
 
 const todosUrl = "https://jsonplaceholder.typicode.com/todos";
-doMonad(pipe(monad(state), chain(getData(todosUrl)), map(show)));
+pipe(monad(state), chain(getData(todosUrl)), map(show)).do();
