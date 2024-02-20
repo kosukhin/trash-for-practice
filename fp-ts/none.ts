@@ -1,4 +1,4 @@
-import { doMonad, monad, pipe, map, chain, none, some, LazyMonad } from "./adt";
+import { monad, pipe, map, chain, none, some, LazyMonad } from "./adt";
 
 const state = {
   name: "Jim",
@@ -24,7 +24,7 @@ const ensureNotName = (name: string) => (v: typeof state) => {
 };
 
 const checkName = (state: { name: string }) =>
-  doMonad(pipe(monad(state), chain(ensureNotName("Liza")), map(show)));
+  pipe(monad(state), chain(ensureNotName("Liza")), map(show)).do();
 
 checkName(state);
 checkName(state2);
@@ -33,14 +33,12 @@ checkName(state3);
 console.log("--- second ---");
 
 const checkName2 = (state: { name: string }) =>
-  doMonad(
-    pipe(
-      monad(state),
-      chain(ensureNotName("Peter")),
-      chain(ensureNotName("Jim")),
-      map(show)
-    )
-  );
+  pipe(
+    monad(state),
+    chain(ensureNotName("Peter")),
+    chain(ensureNotName("Jim")),
+    map(show)
+  ).do();
 
 checkName2(state);
 checkName2(state2);

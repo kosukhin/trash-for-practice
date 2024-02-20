@@ -1,14 +1,4 @@
-import {
-  doMonad,
-  monad,
-  pipe,
-  map,
-  chain,
-  none,
-  some,
-  LazyMonad,
-  left,
-} from "./adt";
+import { monad, pipe, map, chain, some, left } from "./adt";
 
 const state = {
   name: "Jim",
@@ -34,11 +24,12 @@ const ensureNotName = (name: string) => (v: typeof state) => {
 };
 
 const checkName = (state: { name: string }) =>
-  doMonad(pipe(monad(state), chain(ensureNotName("Liza")), map(show)));
+  pipe(monad(state), chain(ensureNotName("Liza")), map(show)).do();
+
+checkName(state).throwIfError();
 
 try {
   checkName(state2).throwIfError();
-//   checkName(state).throwIfError();
 } catch (e) {
   console.log("Ошибка: ", e.message);
 }

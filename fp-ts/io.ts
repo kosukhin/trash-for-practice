@@ -13,10 +13,11 @@ const getData = (url: string) => {
           // throw new Error('test message error')
           // resolve(left('error!'))
           resolve(some("good value"));
+          // reject('reject error !!! ')
           // console.log("end fetch");
           // value.items = [1, 2, 3];
           // resolve(value);
-        }, 2000);
+        }, 5000);
       });
     });
 };
@@ -36,4 +37,5 @@ const tapped = (v: any, error: string) => {
 }
 
 const todosUrl = "https://jsonplaceholder.typicode.com/todos";
-pipe(monad(state), chain(getData(todosUrl)), map(show), map(showNext), tap(tapped)).do();
+const res = pipe(monad(state), chain(getData(todosUrl)), map(show), map(showNext), tap(tapped)).do();
+console.log('result monad', res);

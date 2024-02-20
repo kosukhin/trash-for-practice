@@ -15,7 +15,8 @@ export const monad = (v: any) => new LazyMonad(v);
 export class LazyMonad {
   protected executor: any = (v: any, result: AnyFn) => {
     result(this.of(v));
-  }
+  };
+
   protected value: any;
 
   get unSafeValue() {
@@ -35,10 +36,12 @@ export class LazyMonad {
   }
 
   do() {
+    let monad: LazyMonad = this;
     this.executor(this.value, (res: LazyMonad) => {
-      this.value = res.unSafeValue
+      this.value = res.unSafeValue;
+      monad = res;
     });
-    return this;
+    return monad;
   }
 
   of(value: any) {
@@ -57,11 +60,9 @@ export class LazyMonad {
     return this.modifyExecutor("tap", fn);
   }
 
-  modifyExecutor(method: string, fn: AnyFn) {
+  modifyExecutor(method: "map" | "chain" | "tap", fn: AnyFn) {
     const lastExecutor = this.executor;
-    let counter = 0
     this.executor = (v: any, result: (v: any) => void) => {
-      counter += 1
       lastExecutor(v, (monad: LazyMonad) => {
         monad.executorNextStep((replaceMonad?: LazyMonad) => {
           result(replaceMonad ? replaceMonad[method](fn) : monad[method](fn));
@@ -85,13 +86,13 @@ export class LazyMonad {
     return this;
   }
 
-  getError() {
+  getError(): string | null {
     return null;
   }
 
   throwIfError() {
     if (this.getError()) {
-      throw new Error(this.getError());
+      throw new Error(String(this.getError()));
     }
   }
 }
@@ -146,11 +147,13 @@ export const io = (v: (value: any) => Promise<any>) => new IO(v);
 export class IO extends LazyMonad {
   private io: (value: any) => Promise<any>;
   executorNextStep(fn: AnyFn) {
-    this.io(this.value).then((value) => {
-      fn(value);
-    }).catch(e => {
-      fn(left(e.message))
-    });
+    this.io(this.value)
+      .then((value) => {
+        fn(value);
+      })
+      .catch((e) => {
+        e instanceof Error ? fn(left(e.message)) : fn(left(String(e)));
+      });
   }
 
   constructor(v: (value: any) => Promise<any>) {
