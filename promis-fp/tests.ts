@@ -1,30 +1,29 @@
-import { pipe } from "./pipe";
+import { pipe, pipePromise } from "./pipe";
+import { checkNotEquals, tap, debug, handle, join, toUpper } from "./utils";
 
 /*
 Успешно
 result = "TURTLE"
 finally do smth!
  */
-setTimeout(() =>
-  commonHandler(pipe(debug("\nУспешно"), pass("turtle"), toUpper))
-);
+const one = pipe(pipePromise(debug("\nУспешно"), toUpper), handle);
+setTimeout(one.bind(null, "turtle"));
 
 /*
 Ошибка
 finally do smth!
 catch = "values are equals"
 */
-setTimeout(() =>
-  commonHandler(
-    pipe(
-      debug("\nОшибка"),
-      pass("string"),
-      checkNotEquals("string"),
-      toUpper,
-      debug("Этот код не вызывается")
-    )
-  )
+const two = pipe(
+  pipePromise(
+    debug("\nОшибка"),
+    checkNotEquals("string"),
+    toUpper,
+    debug("Этот код не вызывается")
+  ),
+  handle
 );
+setTimeout(two.bind(null, "string"));
 
 /*
 Массивы
@@ -33,39 +32,13 @@ setTimeout(() =>
 result = "one two"
 finally do smth!
 */
-setTimeout(() =>
-  commonHandler(
-    pipe(
-      debug("\nМассивы"),
-      pass(["one", "two"]),
-      tap((v: any) => console.log("тип аргумента", typeof v)),
-      debug("Перед объединением = %v"),
-      join
-    )
-  )
+const trhee = pipe(
+  pipePromise(
+    debug("\nМассивы"),
+    tap((v: any) => console.log("тип аргумента", typeof v)),
+    debug("Перед объединением = %v"),
+    join
+  ),
+  handle
 );
-
-const commonHandler = (v: Promise<unknown>) =>
-  v
-    .then(debug("result = %v"))
-    .finally(debug("finally do smth!"))
-    .catch(debug("catch = %v"));
-
-const pass = (v: any) => () => v;
-
-const tap = (fn: Function) => (v: any) => {
-  fn(v);
-  return v;
-};
-
-const toUpper = (v: any) => String(v).toUpperCase();
-
-const checkNotEquals = (possibleV: any) => (v: any) =>
-  possibleV === v ? Promise.reject("values are equals") : Promise.resolve(v);
-
-const join = (v: string[]) => v.join(" ");
-
-const debug = (message: string) => (v?: any) => {
-  console.log(message.replace("%v", JSON.stringify(v)));
-  return v;
-};
+setTimeout(trhee.bind(null, ["one", "two", "three"]));
