@@ -1,9 +1,19 @@
 import { pipe } from "./pipe";
 
+/*
+Успешно
+result = "TURTLE"
+finally do smth!
+ */
 setTimeout(() =>
   commonHandler(pipe(debug("\nУспешно"), pass("turtle"), toUpper))
 );
 
+/*
+Ошибка
+finally do smth!
+catch = "values are equals"
+*/
 setTimeout(() =>
   commonHandler(
     pipe(
@@ -16,6 +26,13 @@ setTimeout(() =>
   )
 );
 
+/*
+Массивы
+тип аргумента object
+Перед объединением = ["one","two"]
+result = "one two"
+finally do smth!
+*/
 setTimeout(() =>
   commonHandler(
     pipe(
