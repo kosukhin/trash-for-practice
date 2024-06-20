@@ -12,7 +12,7 @@ export const tap = (fn: Function) => (v: any) => {
 export const toUpper = (v: any) => String(v).toUpperCase();
 
 export const checkNotEquals = (possibleV: any) => (v: any) =>
-  possibleV === v ? Promise.reject("values are equals") : Promise.resolve(v);
+  possibleV === v ? Promise.reject("values are equal") : Promise.resolve(v);
 
 export const join = (v: string[]) => v.join(" ");
 

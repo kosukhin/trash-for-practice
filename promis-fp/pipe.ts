@@ -1,20 +1,15 @@
-export const pipe = (...fns: any[]) => (v: any) =>
-  fns.reduce((acc, fn) => {
-    return fn(acc);
-  }, v);
+export const pipe = (...fns: Function[]) => fns.reduce(
+  (acc, fn) =>
+    acc
+      .then((v: any) => {
+        const fnResult = fn(v);
+        return isThenable(fnResult) ? fnResult : Promise.resolve(fnResult);
+      })
+      .catch(emptyPromise),
+  Promise.resolve(null)
+);
 
-export const pipePromise = (...fns: Function[]) => {
-  return <T extends any>(v: T) => fns.reduce(
-    (acc, fn) =>
-      acc
-        .then((v: any) => {
-          const fnResult = fn(v);
-          return isThenable(fnResult) ? fnResult : Promise.resolve(fnResult);
-        })
-        .catch(emptyPromise),
-    Promise.resolve(v)
-  );
-};
+export const pass = (v: any) => v
 
 const emptyPromise = (err: unknown) => ({
   then(_: unknown, onReject: Function) {
