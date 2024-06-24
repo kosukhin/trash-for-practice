@@ -1,4 +1,4 @@
-import { ObjectPresentation } from "./useObjectPresentation.js";
+import { ObjectPresentation } from "./ObjectPresentation.js";
 
 export class Player {
     #position;

@@ -1,15 +1,15 @@
-import { useActionJump } from "./src/useActionJump.js";
-import { useActionMove } from "./src/useActionMove.js";
-import { useDecorGround } from "./src/useDecorGround.js";
-import { useEventKeyboard } from "./src/useEventKeyboard.js";
-import { useEventRender } from "./src/useEventRender.js";
-import { useEventsCycle } from "./src/useEventsCycle.js";
-import { useGame } from "./src/useGame.js";
-import { useGameWindow } from "./src/useGameWindow.js";
-import { useKeyboard } from "./src/useKeyboard.js";
-import { useKeyboardButton } from "./src/useKeyboardButton.js";
-import { usePlayer } from "./src/usePlayer.js";
-import { usePosition } from "./src/usePosition.js";
+import { useActionJump } from "./src/ActionJump.js";
+import { useActionMove } from "./src/ActionMove.js";
+import { DecorGround, useDecorGround } from "./src/DecorObject.js";
+import { useEventKeyboard } from "./src/EventKeyboard.js";
+import { useEventRender } from "./src/EventRender.js";
+import { useEventsCycle } from "./src/EventsCycle.js";
+import { useGame } from "./src/Game.js";
+import { useGameWindow } from "./src/GameWindow.js";
+import { useKeyboard } from "./src/Keyboard.js";
+import { useKeyboardButton } from "./src/KeyboardButton.js";
+import { usePlayer } from "./src/Player.js";
+import { Position, usePosition } from "./src/Position.js";
 
 const keyboard = useKeyboard();
 const eventRender = useEventRender();
@@ -22,12 +22,21 @@ const cycle = useEventsCycle([
     useEventKeyboard(keyboard, useKeyboardButton('right'), useActionMove('right', mario, eventRender)),
 ]);
 
+const decorGround = new DecorObject(
+    new Position(0, 0),
+    new ObjectPresentation(
+        '/assets/img/ground.png',
+        2000,
+        50,
+        true
+    )
+);
 const game = useGame(
         useGameWindow('#canvas'),
         cycle,
         [
             mario,
-            useDecorGround(),
+            decorGround,
         ]
     );
 eventRender.injectGame(game);
