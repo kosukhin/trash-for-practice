@@ -1,0 +1,4 @@
+- eslint
+- бабель
+- webpack
+- vite
